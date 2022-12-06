@@ -1,1 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org/DTD Mapper 3.0/EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	
+<mapper namespace="com.comgen.dao.IDao">
+	<select id="addr_listDao" resultType="com.comgen.dto.AddrDto">
+		SELECT * FROM address
+	</select>
+	
+	<select id="city_listDao" resultType="com.comgen.dto.AddrDto">
+		SELECT DISTINCT city FROM address
+	</select>
+	
+	<select id="gu_listDao" resultType="com.comgen.dto.AddrDto">
+		SELECT DISTINCT gu FROM address
+	</select>
+	
+	<select id="dong_listDao" resultType="com.comgen.dto.AddrDto">
+		SELECT DISTINCT dong FROM address
+	</select>	
+</mapper>
