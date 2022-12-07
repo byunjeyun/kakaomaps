@@ -37,6 +37,15 @@ public class WebController {
 	return "kakao";
 	}
 	
+	@RequestMapping(value = "bdata")
+	public String bdata(){
+	return "bdata";
+	}
+	
+	@RequestMapping(value = "blist")
+	public String blist(){
+	return "blist";
+	}
 	
 	@RequestMapping(value = "test")
 	public String test(HttpServletRequest request, Model model){

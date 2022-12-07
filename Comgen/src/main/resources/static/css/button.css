@@ -26,3 +26,8 @@ button.button01:active {
   transform: translateY(1px);
 }
   
+button.button02:hover {
+  background-color:blue;
+  Opacity:0.5;  
+  color: white;
+}
