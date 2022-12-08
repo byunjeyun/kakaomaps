@@ -57,6 +57,7 @@
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=be246cb585128818296aac80f596f18c&libraries=services,drawing"></script>
 	
 	<script>
+	
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = { 
         center: new kakao.maps.LatLng(37.562951, 126.972636), // 지도의 중심좌표
@@ -145,12 +146,13 @@
 			    console.log(sney);
 			    console.log(sswx);
 			    console.log(sswy);
-	
+			    
 
 			    //도러명 및 구주소정보 
 			    var geocoder = new kakao.maps.services.Geocoder();
 		    		let addr_arr=[];
-		    		let doro_arr=[];
+		    		let dong_arr=[];
+		    		//경도i 0.001 약 100m , 위도 j 0.001dms dir 88m 
 			    	for(i=sswy; i<sney; i=parseFloat(i)+parseFloat(0.001)) {
 //			    	console.log(i);
 			    		for(j=sswx; j<snex; j=parseFloat(j)+parseFloat(0.001)) {
@@ -160,8 +162,10 @@
 				        if (status === kakao.maps.services.Status.OK) {
 //				            console.log("주소:" + result[0].address.address_name );
 				            addr_arr.push(result[0].address.address_name);
-//				            doro_arr.push(result[0].road_address.address_name);
-				            console.log(result);
+				            dong_arr.push(result[0].address.region_3depth_name);
+//				            console.log(result[0].road_address.address_name);
+//				            console.log(result);
+				            
 				        }else {console.log("주소정보가 없어요");}
 				    };
 			    
@@ -169,9 +173,10 @@
 			    geocoder.coord2Address(coord.getLng(), coord.getLat(), callback); 
 			    		}
 			    } 
-			    	console.log(addr_arr);
-			    	console.log(doro_arr);
+			    	console.log('주소:' , addr_arr);
+			    	console.log('행정동:' , dong_arr);
 			    	
+			
 
 			    	//행정동 정보 행정동 코드 추출
 			    	let loc_code=[];
@@ -188,13 +193,12 @@
 //			    	        console.log('행정구역 코드 : ' + result[0].code);
 			    	    }
 			    	};
-			   
 					    	geocoder.coord2RegionCode(i, j, callback);
-
 					    		}
 					    	}
-	    			console.log(loc_code);
-	    			console.log(loc_addr);
+	    			console.log('지역코드:' , loc_code);
+//	    			console.log(loc_addr);
+	    			
 		    }
 		    //다각형
 	    	if(data.polygon[0]!=null) {
@@ -290,5 +294,7 @@
 ////		}
 	
 	</script>
+		
+	
 	</body>
 	</html>

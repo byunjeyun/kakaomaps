@@ -10,6 +10,7 @@
 </head>
 <body>
 <h5>행정구역</br></h5>
+<form action="select">
 <label for="city">시/도</label>
 <select id="city" name="city" value="">
 <c:forEach items="${city_list}" var="citydtos">

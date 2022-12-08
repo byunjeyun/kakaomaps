@@ -11,14 +11,23 @@
 	</select>
 	
 	<select id="city_listDao" resultType="com.comgen.dto.AddrDto">
-		SELECT DISTINCT city FROM address
+		SELECT * FROM b_member WHERE mid = #{param1}
+		SELECT DISTINCT city FROM address where city = #{parama1}
 	</select>
 	
 	<select id="gu_listDao" resultType="com.comgen.dto.AddrDto">
 		SELECT DISTINCT gu FROM address
 	</select>
+
 	
 	<select id="dong_listDao" resultType="com.comgen.dto.AddrDto">
 		SELECT DISTINCT dong FROM address
 	</select>	
+
+	<!-- param where 조건 컨트롤러 미작성
+	<select id="gu_listDao" resultType="com.comgen.dto.AddrDto">
+		SELECT DISTINCT gu FROM address  where city = #{parama1}
+	</select>
+	 -->
+
 </mapper>
