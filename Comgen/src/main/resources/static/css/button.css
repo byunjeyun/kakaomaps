@@ -1,0 +1,33 @@
+@charset "UTF-8";
+button.button01{
+	width : 80px;
+	border:2px solid #ccf;
+	background-color: #00aa30;
+	border-radius:6px;
+	padding: 3px;
+	font-size: 12px;
+	font-weight: bold;
+	color:#fff;
+	font-family: malgun;
+	transition-duration: 0.4s;
+	cursor: pointer;
+}
+
+button.button01:hover {
+  border:2px solid #3a3;
+  background-color:green;
+  color: white;
+
+}
+
+button.button01:active {
+  background-color: #3e8e41;
+  box-shadow: 0 1px #666;
+  transform: translateY(1px);
+}
+  
+button.button02:hover {
+  background-color:blue;
+  Opacity:0.5;  
+  color: white;
+}
