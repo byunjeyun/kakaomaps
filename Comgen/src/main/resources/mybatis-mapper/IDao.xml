@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org/DTD Mapper 3.0/EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.comgen.dao.IDao">
+	
+	
+	<select id="R_listDao" resultType="com.comgen.dto.RequestDto">
+		SELECT * FROM request_list
+	</select>
+	
+	<select id="managerlistDao" resultType="com.comgen.dto.RequestDto">
+		SELECT ROW_NUMBER() OVER (ORDER BY b.requestno) AS no, b.requestno, a.factnm, b.requestgr, b.requesternm, TO_CHAR(b.requestdate, 'YYYY-MM-DD') as requestdate, b.requestcomment, c.managernm, b.resultstat, TO_CHAR(b.enddate, 'YYYY-MM-DD') as enddate, b.processingtime, b.note
+		FROM fact_mst a, request_list b, manager_mst c
+		WHERE a.factnm = b.factnm(+)
+		AND b.managernm = c.managernm(+)
+
+	    <if test="managernm != null  and managernm != ''">
+	        AND c.managernm = #{param1}
+	    </if>
+
+	    <if test="factnm != null  and factnm != ''">
+	        AND a.factnm = #{param2}
+	    </if>
+
+		<if test="sdate != null and sdate != '' and edate != null and edate != ''" >
+			And b.requestdate between to_date(#{param3}, 'yyyy-mm-dd') and to_date(#{param4}, 'yyyy-mm-dd')
+		</if>
+
+		<if test="(sdate != null and sdate != '') and (edate == null or edate == '')">
+			And b.requestdate between to_date(#{param3}, 'yyyy-mm-dd') and sysdate
+		</if>
+
+		order by requestdate desc
+	</select>
+	
+	
+	<select id="F_listDao" resultType="com.comgen.dto.RequestDto">
+		SELECT distinct factnm, managernm FROM request_list
+		group by factnm, managernm
+	</select>
+
+<!--
+	<insert id="r_inputDao" >
+	    INSERT INTO request_list(requestno, factnm, requestgr, requesternm, requestdate, requestcomment, managernm, resultstat, enddate, processingtime, note)
+		VALUES(to_char(#{param4})||'-'||(SELECT factcd FROM fact_mst WHERE factnm = #{param1})||'-'|| (SELECT managercd FROM manager_mst WHERE managernm = #{param6}), #{param1}, #{param2}, #{param3}, to_date(#{param4},'yyyy-mm-dd'), #{param5}, #{param6}, #{param7}, to_date(#{param8},'yyyy-mm-dd'),#{param9}, #{param10})
+	</insert>
+
+	<insert id="r_inputDao" >
+		INSERT INTO request_list(requestno, factnm, requestgr, requesternm, requestdate, requestcomment, managernm, resultstat, enddate, processingtime, note)
+		VALUES(request_seq.nextval||'-'||(SELECT factcd FROM fact_mst WHERE factnm = #{param1})||'-'|| (SELECT managercd FROM manager_mst WHERE managernm = #{param6}), #{param1}, #{param2}, #{param3}, to_date(#{param4},'yyyy-mm-dd'), #{param5}, #{param6}, #{param7}, to_date(#{param8},'yyyy-mm-dd'),#{param9}, #{param10})
+	</insert>
+!-->
+	
+	<insert id="r_inputDao" >
+		INSERT INTO request_list(requestno, factnm, requestgr, requesternm, requestdate, requestcomment, managernm, resultstat, enddate, note)
+		VALUES(request_seq.nextval||'-'||(SELECT factcd FROM fact_mst WHERE factnm = #{param1})||'-'|| (SELECT managercd FROM manager_mst WHERE managernm = #{param6}), #{param1}, #{param2}, #{param3}, to_date(#{param4},'yyyy-mm-dd'), #{param5}, #{param6}, #{param7}, to_date(#{param8},'yyyy-mm-dd'),#{param9})
+	</insert>
+
+
+
+	<update id="updateDao">
+	    UPDATE request_list SET requestno=request_seq.nextval||'-'||(SELECT factcd FROM fact_mst WHERE factnm = #{param1})||'-'|| (SELECT managercd FROM manager_mst WHERE managernm = #{param6}), factnm = #{param1}, requestgr = #{param2}, requestdate = #{param3}, requesternm = #{param4}, requestcomment = #{param5}, managernm = #{param6}, resultstat = #{param7}, enddate=#{param8}, processingtime = #{param9}, note = #{param10} WHERE requestno = #{param11}
+	</update>
+	
+	
+	<delete id="deleteDao">
+		DELETE FROM request_list WHERE requestno = #{param1}	
+	</delete>
+
+	 
+	
+	 
+	 <select id="nmcheckDao" resultType="int">
+		select count(*) from fact_mst where factnm = #{param1}
+	</select>
+	 
+	 
+	<insert id="fact_inputDao" >
+	    INSERT INTO fact_mst(factcd, factnm) 
+	    VALUES(lpad(fact_seq.nextval, 3, '0'), #{param1})
+	</insert>
+	
+	<select id="factlistDao" resultType="com.comgen.dto.FactDto">
+		SELECT * FROM fact_mst;
+	</select>
+
+	<delete id="fdeleteDao">
+		DELETE FROM fact_mst WHERE factcd = #{param1}
+	</delete>
+
+
+	<select id="mcheckDao" resultType="int">
+		select count(*) from manager_mst where managernm = #{param1}
+	</select>
+
+
+	<insert id="manager_inputDao" >
+		INSERT INTO manager_mst(managercd, managernm)
+		VALUES(lpad(manager_seq.nextval, 2,'0'), #{param1})
+	</insert>
+
+	<select id="mlistDao" resultType="com.comgen.dto.ManagerDto">
+		SELECT * FROM manager_mst;
+	</select>
+
+	<delete id="mdeleteDao">
+		DELETE FROM manager_mst WHERE managercd = #{param1}
+	</delete>
+
+</mapper>
